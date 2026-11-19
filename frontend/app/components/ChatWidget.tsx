@@ -25,13 +25,15 @@ export default function ChatWidget() {
   if (pathname?.startsWith("/admin")) return null; // no chat on admin pages
 
   return (
-    <div className="fixed bottom-5 right-4 z-50 flex flex-col items-end gap-3 sm:right-6">
-      {/* The panel stays mounted (so the conversation is kept) and is shown/hidden with
-          plain CSS classes. No animation library involved, so it cannot get stuck invisible. */}
+    // The wrapper ignores taps (pointer-events-none) so its empty area never blocks the page.
+    // Only the button, the hint and the open panel turn taps back on (pointer-events-auto).
+    <div className="pointer-events-none fixed bottom-5 right-4 z-50 flex flex-col items-end gap-3 sm:right-6">
       <div
         aria-hidden={!open}
         className={`w-[calc(100vw-2rem)] max-w-[24rem] origin-bottom-right transition-all duration-300 ease-out ${
-          open ? "visible translate-y-0 scale-100 opacity-100" : "invisible pointer-events-none translate-y-6 scale-95 opacity-0"
+          open
+            ? "pointer-events-auto visible translate-y-0 scale-100 opacity-100"
+            : "invisible pointer-events-none translate-y-6 scale-95 opacity-0"
         }`}
       >
         <ChatPanel onClose={() => setOpen(false)} />
@@ -47,7 +49,7 @@ export default function ChatWidget() {
               setOpen(true);
               setHint(false);
             }}
-            className="rounded-2xl rounded-br-sm border border-white/20 bg-[#121933] px-4 py-2 text-sm shadow-xl"
+            className="pointer-events-auto rounded-2xl rounded-br-sm border border-white/20 bg-[#121933] px-4 py-2 text-sm shadow-xl"
           >
             Ask me anything 👋
           </motion.button>
@@ -62,7 +64,7 @@ export default function ChatWidget() {
         aria-label={open ? "Close assistant" : "Open assistant"}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 shadow-xl shadow-indigo-500/40"
+        className="pointer-events-auto relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 shadow-xl shadow-indigo-500/40"
       >
         {!open && <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-indigo-500/40" />}
         <AnimatePresence mode="wait" initial={false}>

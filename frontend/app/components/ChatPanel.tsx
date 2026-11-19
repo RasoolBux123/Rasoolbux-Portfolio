@@ -45,7 +45,7 @@ export default function ChatPanel({ onClose }: { onClose?: () => void }) {
   }
 
   return (
-    <div className="flex h-[520px] max-h-[75vh] w-full flex-col rounded-3xl border border-white/20 bg-[#121933]/95 p-4 shadow-2xl shadow-indigo-500/30 backdrop-blur-xl">
+    <div className="flex h-[520px] max-h-[70vh] w-full flex-col rounded-3xl border border-white/20 bg-[#121933]/95 p-4 shadow-2xl shadow-indigo-500/30 backdrop-blur-xl">
       <div className="mb-3 flex items-center gap-2 text-sm font-medium">
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500">
           <Sparkles size={14} />
@@ -147,7 +147,7 @@ export default function ChatPanel({ onClose }: { onClose?: () => void }) {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me anything about RB..."
           maxLength={300}
-          className="flex-1 bg-transparent text-sm text-white outline-none placeholder:text-gray-400"
+          className="flex-1 bg-transparent text-base text-white outline-none placeholder:text-gray-400 sm:text-sm"
         />
         <button
           type="submit"
