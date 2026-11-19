@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  tech        String   // "Next.js,FastAPI" ki tarah save hoga (SQLite me array nahi hota)
+  color1      String
+  color2      String
+  createdAt   DateTime @default(now())
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id       Int    @id @default(1) // only one row, always id 1
+  role     String
+  location String
+  about    String
+  email    String
+  github   String
+  linkedin String
+}
+
+model SkillGroup {
+  id       Int    @id @default(autoincrement())
+  name     String
+  items    String // "Next.js,React,TypeScript"
+  position Int    // order on the page
+}
+
+model Experience {
+  id       Int    @id @default(autoincrement())
+  year     String
+  title    String
+  detail   String
+  position Int
+}
