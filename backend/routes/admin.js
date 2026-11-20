@@ -169,4 +169,66 @@ router.put("/experience", async (req, res, next) => {
   }
 });
 
+// GET /api/admin/analytics?days=30
+router.get("/analytics", async (req, res, next) => {
+  try {
+    const days = Math.min(Math.max(parseInt(req.query.days, 10) || 30, 1), 90);
+    const PKT = 5 * 3600 * 1000; // show days in Pakistan time
+    const dayKey = (d) => new Date(new Date(d).getTime() + PKT).toISOString().slice(0, 10);
+
+    const visits = await prisma.visit.findMany({
+      where: { createdAt: { gte: new Date(Date.now() - days * 86400000) } },
+      orderBy: { createdAt: "desc" },
+      take: 50000,
+    });
+
+    const top = (pick, n = 6) => {
+      const m = new Map();
+      for (const v of visits) {
+        const k = pick(v) || "Unknown";
+        m.set(k, (m.get(k) || 0) + 1);
+      }
+      return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([name, count]) => ({ name, count }));
+    };
+
+    const byDay = new Map();
+    for (const v of visits) {
+      const k = dayKey(v.createdAt);
+      const e = byDay.get(k) || { views: 0, ids: new Set() };
+      e.views++;
+      e.ids.add(v.visitorId);
+      byDay.set(k, e);
+    }
+    const series = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const k = dayKey(Date.now() - i * 86400000);
+      const e = byDay.get(k);
+      series.push({ date: k, views: e ? e.views : 0, visitors: e ? e.ids.size : 0 });
+    }
+    const today = series[series.length - 1];
+
+    res.json({
+      days,
+      totalViews: visits.length,
+      uniqueVisitors: new Set(visits.map((v) => v.visitorId)).size,
+      todayViews: today.views,
+      todayVisitors: today.visitors,
+      series,
+      pages: top((v) => v.path),
+      referrers: top((v) => v.referrer || "Direct"),
+      countries: top((v) => v.country),
+      devices: top((v) => v.device),
+      recent: visits.slice(0, 15).map((v) => ({
+        time: v.createdAt,
+        path: v.path,
+        country: v.country,
+        device: v.device,
+        referrer: v.referrer,
+      })),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

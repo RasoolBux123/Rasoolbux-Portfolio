@@ -32,6 +32,20 @@ export type ChatReply = {
   links?: ChatLink[];
   suggestions: string[];
 };
+
+export type AdminAnalytics = {
+  days: number;
+  totalViews: number;
+  uniqueVisitors: number;
+  todayViews: number;
+  todayVisitors: number;
+  series: { date: string; views: number; visitors: number }[];
+  pages: { name: string; count: number }[];
+  referrers: { name: string; count: number }[];
+  countries: { name: string; count: number }[];
+  devices: { name: string; count: number }[];
+  recent: { time: string; path: string; country: string; device: string; referrer: string }[];
+};
 export type AdminStats = { projects: number; messages: number; unread: number };
 
 export type ContactForm = { name: string; email: string; message: string };

@@ -5,7 +5,7 @@ import CursorGlow from "./components/CursorGlow";
 import IntroLoader from "./components/IntroLoader";
 import ChatWidget from "./components/ChatWidget";
 import type { Metadata } from "next";
-
+import VisitTracker from "./components/VisitTracker";
 const SITE_URL = "https://rasoolbux-dev.vercel.app"; // custom domain lene par yahan badal dena
 const TITLE = "Rasool Bux | Full-Stack Developer";
 const DESCRIPTION =
@@ -36,6 +36,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollProgress />
         <CursorGlow />
         <Navbar />
+         <IntroLoader />
+         <VisitTracker />
         {children}
         <ChatWidget />
       </body>
