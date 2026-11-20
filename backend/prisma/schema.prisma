@@ -13,6 +13,9 @@ model Project {
   tech        String   // "Next.js,FastAPI" ki tarah save hoga (SQLite me array nahi hota)
   color1      String
   color2      String
+  liveUrl     String   @default("")
+  githubUrl   String   @default("")
+  details     String   @default("")
   createdAt   DateTime @default(now())
 }
 

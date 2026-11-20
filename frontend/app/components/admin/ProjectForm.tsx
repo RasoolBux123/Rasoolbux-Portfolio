@@ -23,6 +23,9 @@ export default function ProjectForm({
   const [tech, setTech] = useState(project?.tech.join(", ") ?? "");
   const [c1, setC1] = useState(project?.colors[0] ?? "#4f46e5");
   const [c2, setC2] = useState(project?.colors[1] ?? "#9333ea");
+  const [liveUrl, setLiveUrl] = useState(project?.liveUrl ?? "");
+  const [githubUrl, setGithubUrl] = useState(project?.githubUrl ?? "");
+  const [details, setDetails] = useState(project?.details ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -33,7 +36,7 @@ export default function ProjectForm({
     setErrors({});
     setFormError("");
 
-    const body = JSON.stringify({ title, description, tech, colors: [c1, c2] });
+    const body = JSON.stringify({ title, description, tech, liveUrl, githubUrl, details, colors: [c1, c2] });
     try {
       if (project) await api(`/projects/${project.id}`, { method: "PUT", body });
       else await api("/projects", { method: "POST", body });
@@ -88,7 +91,20 @@ export default function ProjectForm({
           <input className={`${inputCls} ${border("tech")}`} placeholder="Technologies, separated by commas" value={tech} onChange={(e) => setTech(e.target.value)} />
           {errors.tech && <p className="mt-1 text-xs text-red-400">{errors.tech}</p>}
         </div>
+                 <div>
+          <input className={`${inputCls} ${border("liveUrl")}`} placeholder="Live demo link (https://...) - optional" value={liveUrl} onChange={(e) => setLiveUrl(e.target.value)} />
+          {errors.liveUrl && <p className="mt-1 text-xs text-red-400">{errors.liveUrl}</p>}
+        </div>
 
+        <div>
+          <input className={`${inputCls} ${border("githubUrl")}`} placeholder="GitHub link (https://...) - optional" value={githubUrl} onChange={(e) => setGithubUrl(e.target.value)} />
+          {errors.githubUrl && <p className="mt-1 text-xs text-red-400">{errors.githubUrl}</p>}
+        </div>
+
+        <div>
+          <textarea className={`${inputCls} resize-y ${border("details")}`} rows={6} placeholder="Project details for the project page: the problem, what you built, what you learned (optional)" value={details} onChange={(e) => setDetails(e.target.value)} maxLength={3000} />
+          {errors.details && <p className="mt-1 text-xs text-red-400">{errors.details}</p>}
+        </div>
         <div>
           <p className="mb-2 text-xs text-gray-400">Card colors</p>
           <div className="flex items-center gap-3">

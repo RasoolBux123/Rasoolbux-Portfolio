@@ -4,6 +4,10 @@ export type Project = {
   description: string;
   tech: string[];
   colors: [string, string]; // two hex colors for the card image gradient
+   // two hex colors for the card image gradient
+  liveUrl: string; // "" when not set
+  githubUrl: string;
+  details: string; // longer text for the project page
 };
 
 export type Profile = {

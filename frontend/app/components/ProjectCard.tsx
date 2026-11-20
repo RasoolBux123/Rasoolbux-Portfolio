@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { Project } from "../lib/types";
 
@@ -21,35 +22,38 @@ export default function ProjectCard({ p, index }: { p: Project; index: number })
   }
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ type: "spring", stiffness: 120, damping: 16, delay: (index % 3) * 0.1 }}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      whileHover={{ y: -8 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/15 bg-white/5 backdrop-blur transition-shadow hover:shadow-2xl hover:shadow-indigo-500/30"
-    >
-      {/* shine sweep on hover */}
-      <span className="pointer-events-none absolute inset-0 z-10 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+    <Link href={`/projects/${p.id}`} className="block h-full">
+      <motion.article
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ type: "spring", stiffness: 120, damping: 16, delay: (index % 3) * 0.1 }}
+        style={{ rotateX, rotateY, transformPerspective: 900 }}
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        whileHover={{ y: -8 }}
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-white/5 backdrop-blur transition-shadow hover:shadow-2xl hover:shadow-indigo-500/30"
+      >
+        {/* shine sweep on hover */}
+        <span className="pointer-events-none absolute inset-0 z-10 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
-      <div className="overflow-hidden">
-        <div
-          className="h-40 transition duration-700 group-hover:scale-110"
-          style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }}
-        />
-      </div>
-      <div className="relative flex-1 bg-[#11172b] p-5">
-        <h3 className="text-lg font-semibold">{p.title}</h3>
-        <p className="mt-1 text-sm text-gray-400">{p.description}</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {p.tech.map((t) => (
-            <span key={t} className="rounded-full bg-indigo-500/15 px-3 py-1 text-xs text-indigo-200">{t}</span>
-          ))}
+        <div className="overflow-hidden">
+          <div
+            className="h-40 transition duration-700 group-hover:scale-110"
+            style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }}
+          />
         </div>
-      </div>
-    </motion.article>
+        <div className="relative flex-1 bg-[#11172b] p-5">
+          <h3 className="text-lg font-semibold">{p.title}</h3>
+          <p className="mt-1 text-sm text-gray-400">{p.description}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {p.tech.map((t) => (
+              <span key={t} className="rounded-full bg-indigo-500/15 px-3 py-1 text-xs text-indigo-200">{t}</span>
+            ))}
+          </div>
+          <p className="mt-4 text-sm font-medium text-indigo-300">View details →</p>
+        </div>
+      </motion.article>
+    </Link>
   );
 }

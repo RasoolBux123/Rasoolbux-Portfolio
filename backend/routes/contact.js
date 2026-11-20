@@ -2,6 +2,7 @@ const express = require("express");
 const rateLimit = require("../middleware/rateLimit");
 const { validateContact, saveMessage } = require("../services/contact");
 const { notifyNewMessage } = require("../services/notify");
+
 const router = express.Router();
 
 // POST /api/contact   body: { name, email, message }
@@ -14,12 +15,11 @@ router.post("/", rateLimit({ limit: 5, windowMs: 10 * 60 * 1000 }), async (req, 
 
   try {
     await saveMessage(clean);
+    notifyNewMessage(clean); // not awaited: the visitor gets their answer immediately
     res.status(201).json({ ok: true });
   } catch (err) {
     next(err);
   }
 });
-    await saveMessage(clean);
-    notifyNewMessage(clean); // not awaited: the visitor gets their answer immediately
-    res.status(201).json({ ok: true });
+
 module.exports = router;

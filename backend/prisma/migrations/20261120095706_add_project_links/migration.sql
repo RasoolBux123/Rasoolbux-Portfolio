@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Project" ADD COLUMN     "details" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "githubUrl" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "liveUrl" TEXT NOT NULL DEFAULT '';
