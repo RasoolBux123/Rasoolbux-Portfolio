@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Mail, Code2, Briefcase, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Code2, Briefcase, Send, CheckCircle2 ,MessageCircle  } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import Reveal from "./Reveal";
 import { sendContact } from "../lib/contactApi";
 import type { ContactForm, ContactResult, Profile } from "../lib/types";
+
 
 const EMPTY: ContactForm = { name: "", email: "", message: "" };
 const inputCls =
@@ -53,7 +54,15 @@ export default function Contact({ data }: { data: Profile | null }) {
               <>
                 <ContactLink icon={<Mail size={18} />} label={contact.email} href={`mailto:${contact.email}`} />
                 <ContactLink icon={<Code2 size={18} />} label="GitHub" href={contact.github} />
-                <ContactLink icon={<Briefcase size={18} />} label="LinkedIn" href={contact.linkedin} />
+                <ContactLink icon={<Briefcase size={18} />} label="LinkedIn" href={contact.linkedin}
+                 />
+                {contact.whatsapp && (
+  <ContactLink
+    icon={<MessageCircle size={18} />}
+    label="Chat on WhatsApp"
+    href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi Rasool, I saw your portfolio and would like to talk.")}`}
+  />
+)}
               </>
             )}
             <p className="pt-2 text-sm text-gray-400">I usually reply within a day.</p>

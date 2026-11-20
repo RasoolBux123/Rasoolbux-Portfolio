@@ -10,7 +10,7 @@ export type Profile = {
   profile: { name: string; role: string; location: string; about: string };
   skills: { group: string; items: string[] }[];
   experience: { year: string; title: string; detail: string }[];
-  contact: { email: string; github: string; linkedin: string };
+  contact: { email: string; github: string; linkedin: string; whatsapp?: string };
   resumeUrl: string;
 };
 

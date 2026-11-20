@@ -36,7 +36,7 @@ export default function AboutPanel() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [expState, setExpState] = useState<SaveState>("idle");
   const [expError, setExpError] = useState("");
-
+  const [whatsapp, setWhatsapp] = useState("");
   useEffect(() => {
     api<Profile>("/portfolio").then((d) => {
       setRole(d.profile.role);
@@ -45,6 +45,7 @@ export default function AboutPanel() {
       setEmail(d.contact.email);
       setGithub(d.contact.github);
       setLinkedin(d.contact.linkedin);
+      setWhatsapp(d.contact.whatsapp || "");
       setEntries(d.experience);
       setLoaded(true);
     });
@@ -55,7 +56,7 @@ export default function AboutPanel() {
     setFieldErrors({});
     setProfileError("");
     try {
-      await api("/profile", { method: "PUT", body: JSON.stringify({ role, location, about, email, github, linkedin }) });
+      await api("/profile", { method: "PUT", body: JSON.stringify({ role, location, about, email, github, linkedin , whatsapp }) });
       setProfileState("saved");
       setTimeout(() => setProfileState("idle"), 2000);
     } catch (e) {
@@ -126,6 +127,11 @@ export default function AboutPanel() {
             <label className="mb-1 block text-xs text-gray-400">LinkedIn link</label>
             <input className={`${inputCls} ${border("linkedin")}`} value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
             {err("linkedin")}
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-gray-400">WhatsApp number</label>
+            <input className={`${inputCls} ${border("whatsapp")}`} value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} />
+            {err("whatsapp")} 
           </div>
         </div>
 

@@ -43,12 +43,13 @@ const INTENTS = [
     keywords: ["about", "who", "yourself", "intro", "introduce", "bio", "kaun", "tum", "aap"],
     answer: async (d) => ({ reply: `${d.profile.about} I'm based in ${d.profile.location}.` }),
   },
-  {
+    {
     name: "contact",
-    keywords: ["contact", "email", "mail", "reach", "hire", "hiring", "github", "linkedin", "rabta", "phone"],
+    keywords: ["contact", "email", "mail", "reach", "hire", "hiring", "github", "linkedin", "whatsapp", "rabta", "phone"],
     answer: async (d) => ({
       reply: "I'm open to work. You can reach me here:",
       links: [
+        ...(d.contact.whatsapp ? [{ label: "WhatsApp", href: `https://wa.me/${d.contact.whatsapp}` }] : []),
         { label: "Email me", href: `mailto:${d.contact.email}` },
         { label: "GitHub", href: d.contact.github },
         { label: "LinkedIn", href: d.contact.linkedin },

@@ -21,7 +21,7 @@ async function getPortfolio() {
     profile: { name: defaults.profile.name, role: p.role, location: p.location, about: p.about },
     skills: groups.map((g) => ({ group: g.name, items: g.items.split(",") })),
     experience: exp.map((e) => ({ year: e.year, title: e.title, detail: e.detail })),
-    contact: { email: p.email, github: p.github, linkedin: p.linkedin },
+    contact: { email: p.email, github: p.github, linkedin: p.linkedin , whatsapp: p.whatsapp},
     resumeUrl: defaults.resumeUrl,
   };
 }
@@ -35,6 +35,7 @@ function validateProfile(body = {}) {
     email: str(body.email),
     github: str(body.github),
     linkedin: str(body.linkedin),
+    whatsapp: str(body.whatsapp).replace(/[^\d]/g, ""), // keep digits only
   };
   const errors = {};
   if (clean.role.length < 2 || clean.role.length > 100) errors.role = "Role must be 2 to 100 characters";
@@ -43,6 +44,10 @@ function validateProfile(body = {}) {
   if (!EMAIL_RE.test(clean.email)) errors.email = "Enter a valid email";
   if (!URL_RE.test(clean.github)) errors.github = "Must start with https://";
   if (!URL_RE.test(clean.linkedin)) errors.linkedin = "Must start with https://";
+    if (clean.whatsapp) {
+    if (clean.whatsapp.startsWith("0")) errors.whatsapp = "Start with country code (92...), not 0";
+    else if (clean.whatsapp.length < 10 || clean.whatsapp.length > 15) errors.whatsapp = "Enter full number with country code, e.g. 923001234567";
+  }
   return { clean, errors };
 }
 

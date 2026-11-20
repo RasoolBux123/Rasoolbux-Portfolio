@@ -42,7 +42,9 @@ module.exports = {
     email: "rbmalik25@gmail.com",
     github: "https://github.com/RasoolBux123",
     linkedin: "https://www.linkedin.com/in/rasool-b-5a9bb719b/overlay/contact-info/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BM%2Fl1SKH6TQOacfxu49GKtg%3D%3D",
+    whatsapp: "https://wa.me/923063400025",
   },
+
   
   resumeUrl: "/Rasool_bux.pdf",
   projects: [
