@@ -23,7 +23,9 @@ export default function About({ data }: { data: Profile | null }) {
               className="absolute -inset-1 rounded-3xl opacity-70 blur-md"
               style={{ background: "conic-gradient(from 0deg, #6366f1, #d946ef, #22d3ee, #6366f1)" }}
             />
+            
             <div className="absolute inset-0 overflow-hidden rounded-3xl border border-white/20 bg-[#121933]">
+              <Avatar src={data?.photoUrl} />
               <Avatar />
             </div>
           </div>
