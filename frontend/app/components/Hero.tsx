@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { assetUrl } from "../lib/config";
 import Magnetic from "./Magnetic";
 import Avatar from "./Avatar";
 const WORDS = ["Developer", "Builder", "Problem Solver"];
@@ -10,10 +11,10 @@ const item = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
-
-export default function Hero() {
+export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resumeUrl?: string }) { 
+//export default function Hero() {
   const [i, setI] = useState(0);
-  
+
 
   // rotate the highlighted word
   useEffect(() => {
@@ -95,7 +96,7 @@ export default function Hero() {
             </Magnetic>
             <Magnetic>
   <a
-    href="/Rasool_bux.pdf"
+    href={assetUrl(resumeUrl ?? "/Rasool_bux.pdf")}
     download="RasoolBux.pdf"
     className="block rounded-full border border-white/25 px-6 py-3 text-sm font-medium transition hover:bg-white/10"
   >
@@ -117,7 +118,7 @@ export default function Hero() {
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 shadow-[0_0_100px_rgba(99,102,241,0.55)]" />
           
               <div className="absolute inset-1.5 flex items-center justify-center overflow-hidden rounded-full bg-[#0b1020] text-8xl font-bold">
-  <Avatar textClass="text-8xl" />
+  <Avatar src={photoUrl} textClass="text-8xl" />
 </div>
           {[
             { t: "Next.js", c: "-left-6 top-10", d: "0s" },

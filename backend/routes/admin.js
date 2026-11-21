@@ -2,7 +2,7 @@ const express = require("express");
 const prisma = require("../db");
 const requireAuth = require("../middleware/auth");
 const { getProjects, validateProject, createProject, updateProject, deleteProject } = require("../services/projects");
-
+const { saveFile, removeFile } = require("../services/files");
 const router = express.Router();
 const {
   getPortfolio,
@@ -230,5 +230,30 @@ router.get("/analytics", async (req, res, next) => {
     next(err);
   }
 });
+
+
+// ---------- files (CV, photo, project images) ----------
+// The browser sends the file itself as the request body (raw bytes), the type goes in Content-Type.
+router.put("/files/:key", express.raw({ type: () => true, limit: "5mb" }), async (req, res, next) => {
+  try {
+    const r = await saveFile(req.params.key, req.body);
+    if (r.error) return res.status(r.status).json({ error: r.error });
+    res.json({ url: r.url });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.delete("/files/:key", async (req, res, next) => {
+  try {
+    const r = await removeFile(req.params.key);
+    if (r.error) return res.status(r.status).json({ error: r.error });
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = router;
 
 module.exports = router;

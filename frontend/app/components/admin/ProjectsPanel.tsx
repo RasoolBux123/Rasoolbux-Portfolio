@@ -112,7 +112,7 @@ export default function ProjectsPanel({ onChanged }: { onChanged: () => void }) 
       </div>
 
       <AnimatePresence>
-        {(adding || editing) && <ProjectForm key={editing?.id ?? "new"} project={editing} onClose={() => { setAdding(false); setEditing(null); }} onSaved={saved} />}
+        {(adding || editing) && <ProjectForm key={editing?.id ?? "new"} project={editing} onClose={() => { setAdding(false); setEditing(null); }} onSaved={saved} onImageChanged={load} />}
       </AnimatePresence>
     </div>
   );

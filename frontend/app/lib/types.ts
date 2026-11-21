@@ -8,6 +8,7 @@ export type Project = {
   liveUrl: string; // "" when not set
   githubUrl: string;
   details: string; // longer text for the project page
+  image: string; // "" when no image was uploaded
 };
 
 export type Profile = {
@@ -16,6 +17,8 @@ export type Profile = {
   experience: { year: string; title: string; detail: string }[];
   contact: { email: string; github: string; linkedin: string; whatsapp?: string };
   resumeUrl: string;
+  //resumeUrl: string;
+  photoUrl: string;
 };
 
 

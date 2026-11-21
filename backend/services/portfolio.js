@@ -22,7 +22,8 @@ async function getPortfolio() {
     skills: groups.map((g) => ({ group: g.name, items: g.items.split(",") })),
     experience: exp.map((e) => ({ year: e.year, title: e.title, detail: e.detail })),
     contact: { email: p.email, github: p.github, linkedin: p.linkedin , whatsapp: p.whatsapp},
-    resumeUrl: defaults.resumeUrl,
+    resumeUrl: p.cvVer > 0 ? `/api/files/cv?v=${p.cvVer}` : defaults.resumeUrl,
+    photoUrl: p.photoVer > 0 ? `/api/files/photo?v=${p.photoVer}` : defaults.photoUrl,
   };
 }
 

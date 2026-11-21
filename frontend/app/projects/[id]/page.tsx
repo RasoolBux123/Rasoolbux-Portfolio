@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
-import { API_URL } from "../../lib/config";
+//import { API_URL } from "../../lib/config";
 import type { Project } from "../../lib/types";
-
+import { API_URL, assetUrl } from "../../lib/config";
 // always fetch fresh data from the Node.js API
 export const dynamic = "force-dynamic";
 
@@ -57,7 +57,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
       </Link>
 
       <div className="mt-6 overflow-hidden rounded-3xl border border-white/15">
-        <div className="h-48 sm:h-64" style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }} />
+        {p.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={assetUrl(p.image)} alt={p.title} className="h-48 w-full object-cover sm:h-72" />
+        ) : (
+          <div className="h-48 sm:h-64" style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }} />
+        )}
         <div className="bg-[#11172b] p-6 sm:p-8">
           <h1 className="text-3xl font-bold sm:text-4xl">{p.title}</h1>
           <p className="mt-3 text-gray-300">{p.description}</p>

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowUp, ExternalLink, Sparkles, X } from "lucide-react";
 import { sendMessage } from "../lib/chatApi";
 import type { ChatCard, ChatLink } from "../lib/types";
-
+import { assetUrl } from "../lib/config"
 type Msg = { role: "user" | "bot"; text: string; cards?: ChatCard[]; links?: ChatLink[] };
 
 const START: string[] = ["Projects", "Skills", "About", "Contact"];
@@ -92,7 +92,7 @@ export default function ChatPanel({ onClose }: { onClose?: () => void }) {
                   {m.links.map((l) => (
                     <a
                       key={l.label}
-                      href={l.href}
+                      href={assetUrl(l.href)}
                       target={l.href.startsWith("http") ? "_blank" : undefined}
                       rel="noreferrer"
                       className="inline-flex items-center gap-1 rounded-full bg-indigo-500 px-3 py-1.5 text-xs font-medium hover:bg-indigo-400"

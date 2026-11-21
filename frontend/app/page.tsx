@@ -31,7 +31,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
+     <Hero photoUrl={profile?.photoUrl} resumeUrl={profile?.resumeUrl} />
       <Stats />
       <TechMarquee />
       <About data={profile} />

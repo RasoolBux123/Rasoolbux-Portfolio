@@ -14,7 +14,8 @@ import SkillsPanel from "../components/admin/SkillsPanel";
 import ThemeToggle from "../components/admin/ThemeToggle";
 import type { AdminStats } from "../lib/types";
 import AnalyticsPanel from "../components/admin/AnalyticsPanel";
-type Tab = "projects" | "messages" | "about" | "skills" | "analytics";
+import MediaPanel from "../components/admin/MediaPanel";
+type Tab = "projects" | "messages" | "about" | "skills" | "analytics" | "media";
 
 export default function AdminHome() {
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function AdminHome() {
       </div>
 
       <div className="mt-10 flex gap-6 overflow-x-auto border-b border-white/10">
-        {(["projects", "messages", "about", "skills" , "analytics"] as Tab[]).map((t) => (
+        {(["projects", "messages", "about", "skills" , "analytics" , "media"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} className="relative pb-3 text-sm font-medium capitalize">
             <span className={tab === t ? "text-white" : "text-gray-500 hover:text-gray-300"}>
               {t}
@@ -111,6 +112,7 @@ export default function AdminHome() {
         {tab === "about" && <AboutPanel />}
         {tab === "skills" && <SkillsPanel />}
         {tab === "analytics" && <AnalyticsPanel />}
+        {tab === "media" && <MediaPanel />}
       </div>
     </main>
   );

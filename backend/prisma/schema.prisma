@@ -13,6 +13,7 @@ model Project {
   tech        String   // "Next.js,FastAPI" ki tarah save hoga (SQLite me array nahi hota)
   color1      String
   color2      String
+  imageVer    Int      @default(0) // 0 = no image, bumps on every upload
   liveUrl     String   @default("")
   githubUrl   String   @default("")
   details     String   @default("")
@@ -41,6 +42,8 @@ model Profile {
   location String
   about    String
   email    String
+  photoVer Int    @default(0) // 0 = use the default photo
+  cvVer    Int    @default(0) // 0 = use the default CV
   github   String
   linkedin String
   whatsapp String @default("")
@@ -71,4 +74,13 @@ model Visit {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+}
+
+// uploaded files (CV, profile photo, project images) stored in the database
+model File {
+  key       String   @id // "cv", "photo" or "project-3"
+  mime      String
+  data      Bytes
+  size      Int
+  updatedAt DateTime @updatedAt
 }

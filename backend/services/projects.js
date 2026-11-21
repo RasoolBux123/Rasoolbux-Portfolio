@@ -13,10 +13,12 @@ function toProject(row) {
     tech: row.tech.split(","),
     colors: [row.color1, row.color2],
     liveUrl: row.liveUrl,
+    image: row.imageVer > 0 ? `/api/files/project-${row.id}?v=${row.imageVer}` : "",
     githubUrl: row.githubUrl,
     details: row.details,
   };
 }
+
 
 async function getProjects() {
   const rows = await prisma.project.findMany({ orderBy: { id: "asc" } });
@@ -69,6 +71,7 @@ async function updateProject(id, clean) {
 
 async function deleteProject(id) {
   await prisma.project.delete({ where: { id } });
+  await prisma.file.deleteMany({ where: { key: `project-${id}` } });
 }
 
 module.exports = { getProjects, getProject, validateProject, createProject, updateProject, deleteProject };

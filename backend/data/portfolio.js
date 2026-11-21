@@ -47,6 +47,7 @@ module.exports = {
 
   
   resumeUrl: "/Rasool_bux.pdf",
+  photoUrl: "/pic.jpg",
   projects: [
     {
       id: 1,

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { api, ApiError } from "../../lib/adminApi";
 import type { Project } from "../../lib/types";
-
+import ImageUpload from "./ImageUpload";
 const inputCls =
   "w-full rounded-xl border bg-white/5 px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-indigo-400 focus:bg-white/10";
 
@@ -13,10 +13,12 @@ export default function ProjectForm({
   project,
   onClose,
   onSaved,
+  onImageChanged,
 }: {
   project: Project | null; // null = adding a new project
   onClose: () => void;
   onSaved: () => void;
+  onImageChanged?: () => void;
 }) {
   const [title, setTitle] = useState(project?.title ?? "");
   const [description, setDescription] = useState(project?.description ?? "");
@@ -104,6 +106,14 @@ export default function ProjectForm({
         <div>
           <textarea className={`${inputCls} resize-y ${border("details")}`} rows={6} placeholder="Project details for the project page: the problem, what you built, what you learned (optional)" value={details} onChange={(e) => setDetails(e.target.value)} maxLength={3000} />
           {errors.details && <p className="mt-1 text-xs text-red-400">{errors.details}</p>}
+        </div>
+                <div>
+          <p className="mb-2 text-xs text-gray-400">Project image (shown on the card and project page)</p>
+          {project ? (
+            <ImageUpload fileKey={`project-${project.id}`} current={project.image} onChange={onImageChanged} />
+          ) : (
+            <p className="rounded-xl border border-dashed border-white/20 px-4 py-3 text-xs text-gray-400">Save the project first, then edit it to add an image.</p>
+          )}
         </div>
         <div>
           <p className="mb-2 text-xs text-gray-400">Card colors</p>

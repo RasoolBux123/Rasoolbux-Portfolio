@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { Project } from "../lib/types";
-
+import { assetUrl } from "../lib/config"
 export default function ProjectCard({ p, index }: { p: Project; index: number }) {
   // 3D tilt that follows the mouse
   const mx = useMotionValue(0);
@@ -37,11 +37,16 @@ export default function ProjectCard({ p, index }: { p: Project; index: number })
         {/* shine sweep on hover */}
         <span className="pointer-events-none absolute inset-0 z-10 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
-        <div className="overflow-hidden">
-          <div
-            className="h-40 transition duration-700 group-hover:scale-110"
-            style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }}
-          />
+          <div className="overflow-hidden">
+          {p.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={assetUrl(p.image)} alt={p.title} loading="lazy" className="h-40 w-full object-cover transition duration-700 group-hover:scale-110" />
+          ) : (
+            <div
+              className="h-40 transition duration-700 group-hover:scale-110"
+              style={{ background: `linear-gradient(135deg, ${p.colors[0]}, ${p.colors[1]})` }}
+            />
+          )}
         </div>
         <div className="relative flex-1 bg-[#11172b] p-5">
           <h3 className="text-lg font-semibold">{p.title}</h3>
