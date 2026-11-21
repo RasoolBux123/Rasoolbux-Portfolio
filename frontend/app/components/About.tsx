@@ -26,7 +26,7 @@ export default function About({ data }: { data: Profile | null }) {
             
             <div className="absolute inset-0 overflow-hidden rounded-3xl border border-white/20 bg-[#121933]">
               <Avatar src={data?.photoUrl} />
-              <Avatar />
+             
             </div>
           </div>
         </Reveal>

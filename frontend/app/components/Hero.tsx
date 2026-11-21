@@ -1,30 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { assetUrl } from "../lib/config";
+import { motion } from "framer-motion";
 import Magnetic from "./Magnetic";
 import Avatar from "./Avatar";
-const WORDS = ["Developer", "Builder", "Problem Solver"];
+import Typewriter from "./Typewriter";
+import { assetUrl } from "../lib/config";
+
+// phrases that get typed in the heading (edit freely)
+const PHRASES = ["Full-Stack Developer", "Next.js Developer", "Automation (n8n) Builder"];
+
+// chips that orbit the photo; "a" is the starting angle in degrees
+const CHIPS = [
+  { t: "Full Stack", a: 0 },
+  { t: "AI/ML", a: 90 },
+  { t: "Backend Dev", a: 180 },
+  { t: "DevOps", a: 270 },
+];
 
 const item = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
-export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resumeUrl?: string }) { 
-//export default function Hero() {
-  const [i, setI] = useState(0);
 
-
-  // rotate the highlighted word
-  useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % WORDS.length), 2600);
-    return () => clearInterval(t);
-  }, []);
-
+export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resumeUrl?: string }) {
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-24">
-      {/* glowing blobs that drift slowly */}
+      {/* glowing blobs behind the hero */}
       <motion.div
         animate={{ x: [0, -60, 20, 0], y: [0, 40, -30, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
@@ -51,7 +52,7 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
           </motion.span>
 
           <motion.h1 variants={item} className="mt-5 text-5xl font-bold leading-tight sm:text-6xl">
-            {"Hi, I'm Rasool Bux".split("").map((ch, n) => (
+            {"Hi, I'm RB".split("").map((ch, n) => (
               <motion.span
                 key={n}
                 initial={{ opacity: 0, y: 40, rotate: 8 }}
@@ -63,26 +64,16 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
               </motion.span>
             ))}
             <br />
-            Full-Stack{" "}
-            <span className="relative inline-block align-bottom">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={WORDS[i]}
-                  initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -30, filter: "blur(6px)" }}
-                  transition={{ duration: 0.4 }}
-                  className="inline-block bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-indigo-300 bg-[length:200%_100%] bg-clip-text text-transparent"
-                  style={{ animation: "shine 3s linear infinite" }}
-                >
-                  {WORDS[i]}
-                </motion.span>
-              </AnimatePresence>
+            <span className="block min-h-[2.5em]">
+              <Typewriter
+                words={PHRASES}
+                className="bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-indigo-300 bg-[length:200%_100%] bg-clip-text text-transparent"
+              />
             </span>
           </motion.h1>
 
           <motion.p variants={item} className="mt-5 max-w-md leading-relaxed text-gray-400">
-            I build fast, modern web apps with Next.js, Node.js , FAstApi, Django , AI/ML and PostgreSQL.
+            I build fast, modern web apps with Next.js, Node.js and PostgreSQL.
           </motion.p>
 
           <motion.div variants={item} className="mt-7 flex flex-wrap gap-3">
@@ -95,44 +86,49 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
               </a>
             </Magnetic>
             <Magnetic>
-  <a
-    href={assetUrl(resumeUrl ?? "/Rasool_bux.pdf")}
-    download="RasoolBux.pdf"
-    className="block rounded-full border border-white/25 px-6 py-3 text-sm font-medium transition hover:bg-white/10"
-  >
-    Download CV
-  </a>
-</Magnetic>
+              <a
+                href={assetUrl(resumeUrl ?? "/Rasool_bux.pdf")}
+                download
+                className="block rounded-full border border-white/25 px-6 py-3 text-sm font-medium transition hover:bg-white/10"
+              >
+                Download CV
+              </a>
+            </Magnetic>
           </motion.div>
         </motion.div>
 
-        {/* right: avatar with floating tech chips (Phase 3: chat panel yahan aayega) */}
-               {/* right: my photo with floating tech chips */}
+        {/* right: my photo (stays still) with tech chips travelling around it */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-          className="relative mx-auto h-72 w-72 sm:h-80 sm:w-80"
+          className="relative mx-auto h-64 w-64 sm:h-80 sm:w-80"
         >
           {/* gradient ring */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 shadow-[0_0_100px_rgba(99,102,241,0.55)]" />
-          
-              <div className="absolute inset-1.5 flex items-center justify-center overflow-hidden rounded-full bg-[#0b1020] text-8xl font-bold">
-  <Avatar src={photoUrl} textClass="text-8xl" />
-</div>
-          {[
-            { t: "Next.js", c: "-left-6 top-10", d: "0s" },
-            { t: "Node.js", c: "-right-6 top-20", d: "0.6s" },
-            { t: "PostgreSQL", c: "left-0 bottom-8", d: "1.2s" },
-          ].map((chip) => (
-            <span
-              key={chip.t}
-              style={{ animation: `float 4s ease-in-out ${chip.d} infinite` }}
-              className={`absolute ${chip.c} rounded-xl border border-white/25 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-md`}
-            >
-              {chip.t}
-            </span>
-          ))}
+          <div className="absolute inset-1.5 flex items-center justify-center overflow-hidden rounded-full bg-[#0b1020] text-8xl font-bold">
+            <Avatar src={photoUrl} textClass="text-8xl" />
+          </div>
+
+          {/* --r = how far from the centre the chips travel */}
+          <div aria-hidden className="orbit pointer-events-none absolute inset-0 [--r:128px] sm:[--r:180px]">
+            {CHIPS.map((c) => (
+              <div
+                key={c.t}
+                className="absolute left-1/2 top-1/2"
+                style={{ transformOrigin: "0 0", transform: `rotate(${c.a}deg) translateY(calc(var(--r) * -1))` }}
+              >
+                <div className="-translate-x-1/2 -translate-y-1/2">
+                  <span
+                    className="orbit-chip inline-block whitespace-nowrap rounded-xl border border-white/25 bg-white/10 px-3 py-1.5 text-xs backdrop-blur-md"
+                    style={{ "--a": `${c.a}deg` } as React.CSSProperties}
+                  >
+                    {c.t}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
