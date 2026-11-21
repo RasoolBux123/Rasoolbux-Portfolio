@@ -60,7 +60,7 @@ export default function Navbar() {
             href="#contact"
             className="rounded-full bg-indigo-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
           >
-            Hire me
+            Let&apos;s talk
           </a>
         </div>
 
