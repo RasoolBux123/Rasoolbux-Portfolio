@@ -47,6 +47,8 @@ model Profile {
   github   String
   linkedin String
   whatsapp String @default("")
+  nowText  String    @default("")
+  nowAt    DateTime? // when the Now text last changed
 }
 
 model SkillGroup {

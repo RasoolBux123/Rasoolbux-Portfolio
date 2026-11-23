@@ -37,6 +37,7 @@ export default function AboutPanel() {
   const [expState, setExpState] = useState<SaveState>("idle");
   const [expError, setExpError] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [nowText, setNowText] = useState("");
   useEffect(() => {
     api<Profile>("/portfolio").then((d) => {
       setRole(d.profile.role);
@@ -48,6 +49,7 @@ export default function AboutPanel() {
       setWhatsapp(d.contact.whatsapp || "");
       setEntries(d.experience);
       setLoaded(true);
+      setNowText(d.now?.text ?? "");
     });
   }, []);
 
@@ -56,7 +58,7 @@ export default function AboutPanel() {
     setFieldErrors({});
     setProfileError("");
     try {
-      await api("/profile", { method: "PUT", body: JSON.stringify({ role, location, about, email, github, linkedin , whatsapp }) });
+      await api("/profile", { method: "PUT", body: JSON.stringify({ role, location, about, email, github, linkedin , whatsapp ,now: nowText}) });
       setProfileState("saved");
       setTimeout(() => setProfileState("idle"), 2000);
     } catch (e) {
@@ -94,6 +96,19 @@ export default function AboutPanel() {
         <h2 className="font-semibold">About and contact details</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+          <label className="mb-1 block text-xs text-gray-400">
+            Right now, what are you working on? ({nowText.length}/140) — leave empty to hide the card
+          </label>
+          <input
+            className={`${inputCls} ${border("now")}`}
+            value={nowText}
+            onChange={(e) => setNowText(e.target.value)}
+            maxLength={140}
+            placeholder="Learning DevOps and building analytics for my portfolio"
+          />
+          {err("now")}
+        </div>
           <div>
             <label className="mb-1 block text-xs text-gray-400">Role</label>
             <input className={`${inputCls} ${border("role")}`} value={role} onChange={(e) => setRole(e.target.value)} maxLength={100} />

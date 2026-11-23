@@ -19,6 +19,7 @@ export type Profile = {
   resumeUrl: string;
   //resumeUrl: string;
   photoUrl: string;
+  now?: { text: string; updatedAt: string | null } | null;
 };
 
 

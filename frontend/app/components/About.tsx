@@ -5,11 +5,11 @@ import SectionTitle from "./SectionTitle";
 import Reveal from "./Reveal";
 import Avatar from "./Avatar";
 import type { Profile } from "../lib/types";
-
+import NowCard from "./NowCard";
 export default function About({ data }: { data: Profile | null }) {
   const about = data?.profile.about ?? "I build modern full-stack web apps and learn by shipping real projects.";
   const experience = data?.experience ?? [];
-
+  <NowCard now={data?.now} />
   return (
     <section id="about" className="mx-auto max-w-6xl scroll-mt-24 px-5 pt-28">
       <SectionTitle title="About Me" subtitle="A little about who I am and how I got here." />

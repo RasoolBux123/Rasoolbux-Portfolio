@@ -24,6 +24,7 @@ async function getPortfolio() {
     contact: { email: p.email, github: p.github, linkedin: p.linkedin , whatsapp: p.whatsapp},
     resumeUrl: p.cvVer > 0 ? `/api/files/cv?v=${p.cvVer}` : defaults.resumeUrl,
     photoUrl: p.photoVer > 0 ? `/api/files/photo?v=${p.photoVer}` : defaults.photoUrl,
+    now: p.nowText ? { text: p.nowText, updatedAt: p.nowAt ? p.nowAt.toISOString() : null } : null,
   };
 }
 
@@ -37,6 +38,7 @@ function validateProfile(body = {}) {
     github: str(body.github),
     linkedin: str(body.linkedin),
     whatsapp: str(body.whatsapp).replace(/[^\d]/g, ""), // keep digits only
+    now: str(body.now),
   };
   const errors = {};
   if (clean.role.length < 2 || clean.role.length > 100) errors.role = "Role must be 2 to 100 characters";
@@ -47,13 +49,25 @@ function validateProfile(body = {}) {
   if (!URL_RE.test(clean.linkedin)) errors.linkedin = "Must start with https://";
     if (clean.whatsapp) {
     if (clean.whatsapp.startsWith("0")) errors.whatsapp = "Start with country code (92...), not 0";
+    if (clean.now.length > 140) errors.now = "Keep it under 140 characters";
     else if (clean.whatsapp.length < 10 || clean.whatsapp.length > 15) errors.whatsapp = "Enter full number with country code, e.g. 923001234567";
   }
   return { clean, errors };
 }
 
-function saveProfile(clean) {
-  return prisma.profile.upsert({ where: { id: 1 }, update: clean, create: { id: 1, ...clean } });
+async function saveProfile(clean) {
+  const { now, ...rest } = clean;
+  const old = await prisma.profile.findUnique({ where: { id: 1 } });
+  const changed = (old?.nowText ?? "") !== now;
+
+  // only touch the "updated" time when the Now text really changed
+  const nowData = { nowText: now, ...(changed ? { nowAt: now ? new Date() : null } : {}) };
+
+  return prisma.profile.upsert({
+    where: { id: 1 },
+    update: { ...rest, ...nowData },
+    create: { id: 1, ...rest, nowText: now, nowAt: now ? new Date() : null },
+  });
 }
 
 // ---------- skills (the admin sends the whole list, we replace it) ----------
