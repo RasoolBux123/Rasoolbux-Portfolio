@@ -7,7 +7,7 @@ import Typewriter from "./Typewriter";
 import { assetUrl } from "../lib/config";
 
 // phrases that get typed in the heading (edit freely)
-const PHRASES = ["Full-Stack Developer", "Next.js Developer", "Automation (n8n) Builder"];
+const PHRASES = ["Next.js · FastAPI · PostgreSQL", "Building real-world products", "Automation with n8n"];
 
 // chips that orbit the photo; "a" is the starting angle in degrees
 const CHIPS = [
@@ -64,15 +64,16 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
               </motion.span>
             ))}
             <br />
-            <span className="block min-h-[2.5em]">
-              <Typewriter
-                words={PHRASES}
-                className="bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-indigo-300 bg-[length:200%_100%] bg-clip-text text-transparent"
-              />
+                        <br />
+            <span className="mt-1 block bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-indigo-300 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
+              AI Full Stack Developer
             </span>
           </motion.h1>
+                    <motion.p variants={item} className="mt-3 min-h-[1.75rem] text-lg text-gray-400">
+            <Typewriter words={PHRASES} />
+          </motion.p>
 
-          <motion.p variants={item} className="mt-5 max-w-md leading-relaxed text-gray-400">
+          <motion.p variants={item} className="mt-4 max-w-md leading-relaxed text-gray-400">
             I build fast, modern web apps with Next.js, Node.js and PostgreSQL.
           </motion.p>
 

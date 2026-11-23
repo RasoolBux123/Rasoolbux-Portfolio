@@ -8,7 +8,9 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import { API_URL } from "./lib/config";
 import type { Profile, Project } from "./lib/types";
+import Experience from "./components/Experience";
 
+      
 // always fetch fresh data from the Node.js API
 export const dynamic = "force-dynamic";
 
@@ -35,6 +37,7 @@ export default async function Home() {
       <Stats />
       <TechMarquee />
       <About data={profile} />
+      <Experience data={profile} />
       <Projects projects={projects} />
       <Skills data={profile} />
       <Contact data={profile} />

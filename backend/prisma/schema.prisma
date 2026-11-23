@@ -64,6 +64,8 @@ model Experience {
   title    String
   detail   String
   position Int
+  current  Boolean @default(false) // shows the green "Current" badge
+  tech     String  @default("")    // "Next.js,FastAPI"
 }
 
 model Visit {

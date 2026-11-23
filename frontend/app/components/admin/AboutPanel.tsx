@@ -7,7 +7,8 @@ import { api, ApiError } from "../../lib/adminApi";
 import SaveButton, { type SaveState } from "./SaveButton";
 import type { Profile } from "../../lib/types";
 
-type Entry = Profile["experience"][number];
+// tech is edited as one comma separated text box ("Next.js, FastAPI")
+type Entry = { year: string; title: string; detail: string; current: boolean; tech: string };
 
 const inputCls =
   "w-full rounded-xl border bg-white/5 px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-indigo-400 focus:bg-white/10";
@@ -47,7 +48,7 @@ export default function AboutPanel() {
       setGithub(d.contact.github);
       setLinkedin(d.contact.linkedin);
       setWhatsapp(d.contact.whatsapp || "");
-      setEntries(d.experience);
+      setEntries(d.experience.map((e) => ({ year: e.year, title: e.title, detail: e.detail, current: !!e.current, tech: (e.tech ?? []).join(", ") })));
       setLoaded(true);
       setNowText(d.now?.text ?? "");
     });
@@ -164,7 +165,7 @@ export default function AboutPanel() {
             <p className="text-xs text-gray-400">Shown under your About text. Top entry shows first.</p>
           </div>
           <button
-            onClick={() => setEntries((l) => [...l, { year: "", title: "", detail: "" }])}
+           onClick={() => setEntries((l) => [...l, { year: "", title: "", detail: "", current: false, tech: "" }])}
             className="flex items-center gap-1.5 rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:bg-white/10"
           >
             <Plus size={14} /> Add entry
@@ -177,6 +178,11 @@ export default function AboutPanel() {
           <motion.div key={i} layout className="grid gap-3 rounded-2xl border border-white/10 p-4 md:grid-cols-[140px_1fr_auto]">
             <input className={`${inputCls} border-white/15`} placeholder="Label (Present, 2025...)" value={e.year} onChange={(ev) => update(i, { year: ev.target.value })} maxLength={30} />
             <div className="space-y-3">
+             <input className={`${inputCls} border-white/15`} placeholder="Tech, comma separated (Next.js, FastAPI)" value={e.tech} onChange={(ev) => update(i, { tech: ev.target.value })} />
+              <label className="flex items-center gap-2 text-xs text-gray-300">
+                <input type="checkbox" checked={e.current} onChange={(ev) => update(i, { current: ev.target.checked })} className="h-4 w-4 accent-emerald-400" />
+                This is my current job (shows the green "Current" badge)
+              </label>
               <input className={`${inputCls} border-white/15`} placeholder="Title" value={e.title} onChange={(ev) => update(i, { title: ev.target.value })} maxLength={100} />
               <input className={`${inputCls} border-white/15`} placeholder="Short detail" value={e.detail} onChange={(ev) => update(i, { detail: ev.target.value })} maxLength={200} />
             </div>

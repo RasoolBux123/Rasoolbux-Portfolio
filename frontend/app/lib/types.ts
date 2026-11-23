@@ -14,7 +14,7 @@ export type Project = {
 export type Profile = {
   profile: { name: string; role: string; location: string; about: string };
   skills: { group: string; items: string[] }[];
-  experience: { year: string; title: string; detail: string }[];
+    experience: { year: string; title: string; detail: string; current?: boolean; tech?: string[] }[];
   contact: { email: string; github: string; linkedin: string; whatsapp?: string };
   resumeUrl: string;
   //resumeUrl: string;

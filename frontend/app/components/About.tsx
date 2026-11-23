@@ -8,7 +8,7 @@ import type { Profile } from "../lib/types";
 import NowCard from "./NowCard";
 export default function About({ data }: { data: Profile | null }) {
   const about = data?.profile.about ?? "I build modern full-stack web apps and learn by shipping real projects.";
-  const experience = data?.experience ?? [];
+  
   <NowCard now={data?.now} />
   return (
     <section id="about" className="mx-auto max-w-6xl scroll-mt-24 px-5 pt-28">
@@ -41,25 +41,8 @@ export default function About({ data }: { data: Profile | null }) {
             )}
           </Reveal>
 
-          {experience.length > 0 && (
-            <ol className="relative mt-8 space-y-6 border-l border-white/15 pl-6">
-              {experience.map((e, i) => (
-                <motion.li
-                  key={e.year + e.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.12 }}
-                  className="relative"
-                >
-                  <span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-gradient-to-r from-indigo-400 to-fuchsia-400 ring-4 ring-[#0b1020]" />
-                  <p className="text-xs font-semibold uppercase tracking-wider text-indigo-300">{e.year}</p>
-                  <h3 className="font-semibold">{e.title}</h3>
-                  <p className="text-sm text-gray-400">{e.detail}</p>
-                </motion.li>
-              ))}
-            </ol>
-          )}
+          
+             
         </div>
       </div>
     </section>
