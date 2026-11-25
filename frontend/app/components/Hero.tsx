@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Magnetic from "./Magnetic";
 import Avatar from "./Avatar";
 import Typewriter from "./Typewriter";
+import SmartGreeting from "./SmartGreeting";
 import { assetUrl } from "../lib/config";
 
 // phrases that get typed in the heading (edit freely)
@@ -44,6 +45,10 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.12 } } }}
         >
+          <motion.div variants={item}>
+            <SmartGreeting resumeUrl={resumeUrl} />
+          </motion.div>
+
           <motion.span
             variants={item}
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-indigo-500/20 px-4 py-1.5 text-xs"
@@ -64,12 +69,12 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
               </motion.span>
             ))}
             <br />
-                        <br />
             <span className="mt-1 block bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-indigo-300 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
               AI Full Stack Developer
             </span>
           </motion.h1>
-                    <motion.p variants={item} className="mt-3 min-h-[1.75rem] text-lg text-gray-400">
+
+          <motion.p variants={item} className="mt-3 min-h-[1.75rem] text-lg text-gray-400">
             <Typewriter words={PHRASES} />
           </motion.p>
 
