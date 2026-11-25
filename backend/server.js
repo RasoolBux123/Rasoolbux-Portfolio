@@ -11,6 +11,7 @@ const adminRouter = require("./routes/admin");
 const app = express();
 const trackRouter = require("./routes/track");
 const filesRouter = require("./routes/files");
+const statsRouter = require("./routes/stats");
 // ---- middleware (runs on every request, in this order) ----
 app.use(cors({ origin: process.env.CLIENT_URL.split(",").map((s) => s.trim()) }));
 app.set("trust proxy", 1); // so req.ip is the real visitor IP behind Render/Vercel
@@ -31,6 +32,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/track", trackRouter);
 app.use("/api/admin", adminRouter); 
 app.use("/api/files", filesRouter);
+app.use("/api/stats", statsRouter);
 // ---- 404 and error handler (always last) ----
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));
 app.use((err, req, res, next) => {
