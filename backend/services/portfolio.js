@@ -1,6 +1,7 @@
 const prisma = require("../db");
 const defaults = require("../data/portfolio");
 const { listCertificates } = require("./credentials");
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https?:\/\/\S+$/i;
 const str = (v) => (typeof v === "string" ? v.trim() : "");
@@ -9,22 +10,29 @@ const str = (v) => (typeof v === "string" ? v.trim() : "");
 // Until the admin saves something for the first time (profile row missing),
 // it falls back to data/portfolio.js.
 async function getPortfolio() {
-    const [p, groups, exp, edu, certificates] = await Promise.all([
+  const [p, groups, exp, edu, certificates] = await Promise.all([
     prisma.profile.findUnique({ where: { id: 1 } }),
     prisma.skillGroup.findMany({ orderBy: { position: "asc" } }),
     prisma.experience.findMany({ orderBy: { position: "asc" } }),
     prisma.education.findMany({ orderBy: { position: "asc" } }),
     listCertificates(),
   ]);
+
   if (!p) return defaults;
 
   return {
     profile: { name: defaults.profile.name, role: p.role, location: p.location, about: p.about },
     skills: groups.map((g) => ({ group: g.name, items: g.items.split(",") })),
-    experience: exp.map((e) => ({ year: e.year, title: e.title, detail: e.detail })),
+    experience: exp.map((e) => ({
+      year: e.year,
+      title: e.title,
+      detail: e.detail,
+      current: e.current,
+      tech: e.tech ? e.tech.split(",") : [],
+    })),
     education: edu.map((e) => ({ degree: e.degree, school: e.school, period: e.period, detail: e.detail })),
     certificates,
-    contact: { email: p.email, github: p.github, linkedin: p.linkedin , whatsapp: p.whatsapp},
+    contact: { email: p.email, github: p.github, linkedin: p.linkedin, whatsapp: p.whatsapp },
     resumeUrl: p.cvVer > 0 ? `/api/files/cv?v=${p.cvVer}` : defaults.resumeUrl,
     photoUrl: p.photoVer > 0 ? `/api/files/photo?v=${p.photoVer}` : defaults.photoUrl,
     now: p.nowText ? { text: p.nowText, updatedAt: p.nowAt ? p.nowAt.toISOString() : null } : null,
@@ -50,11 +58,11 @@ function validateProfile(body = {}) {
   if (!EMAIL_RE.test(clean.email)) errors.email = "Enter a valid email";
   if (!URL_RE.test(clean.github)) errors.github = "Must start with https://";
   if (!URL_RE.test(clean.linkedin)) errors.linkedin = "Must start with https://";
-    if (clean.whatsapp) {
+  if (clean.whatsapp) {
     if (clean.whatsapp.startsWith("0")) errors.whatsapp = "Start with country code (92...), not 0";
-    if (clean.now.length > 140) errors.now = "Keep it under 140 characters";
     else if (clean.whatsapp.length < 10 || clean.whatsapp.length > 15) errors.whatsapp = "Enter full number with country code, e.g. 923001234567";
   }
+  if (clean.now.length > 140) errors.now = "Keep it under 140 characters";
   return { clean, errors };
 }
 
@@ -113,7 +121,13 @@ function validateExperience(body) {
     if (year.length < 1 || year.length > 30) return { error: `Entry ${i + 1}: label must be 1 to 30 characters` };
     if (title.length < 2 || title.length > 100) return { error: `Entry ${i + 1}: title must be 2 to 100 characters` };
     if (detail.length > 200) return { error: `Entry ${i + 1}: detail is longer than 200 characters` };
-    clean.push({ year, title, detail });
+
+    const rawTech = Array.isArray(list[i]?.tech) ? list[i].tech : String(list[i]?.tech ?? "").split(",");
+    const tech = rawTech.map((x) => String(x).trim()).filter(Boolean);
+    if (tech.length > 8) return { error: `Entry ${i + 1}: maximum 8 tech chips` };
+    if (tech.some((x) => x.length > 30)) return { error: `Entry ${i + 1}: a tech chip is longer than 30 characters` };
+
+    clean.push({ year, title, detail, current: list[i]?.current === true, tech: tech.join(",") });
   }
   return { clean };
 }
