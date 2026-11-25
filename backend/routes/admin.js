@@ -2,8 +2,17 @@ const express = require("express");
 const prisma = require("../db");
 const requireAuth = require("../middleware/auth");
 const { getProjects, validateProject, createProject, updateProject, deleteProject } = require("../services/projects");
+const {
+  validateEducation,
+  replaceEducation,
+  validateCertificate,
+  createCertificate,
+  updateCertificate,
+  deleteCertificate,
+} = require("../services/credentials");
 const { saveFile, removeFile } = require("../services/files");
 const router = express.Router();
+
 const {
   getPortfolio,
   validateProfile,
@@ -25,6 +34,60 @@ const parseId = (req) => {
 // Prisma throws code P2025 when the row to update/delete does not exist
 const notFound = (err) => err && err.code === "P2025";
 
+
+
+
+// ---------- education + certificates ----------
+router.put("/education", async (req, res, next) => {
+  const { clean, error } = validateEducation(req.body);
+  if (error) return res.status(400).json({ error });
+
+  try {
+    await replaceEducation(clean);
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/certificates", async (req, res, next) => {
+  const { clean, errors } = validateCertificate(req.body);
+  if (Object.keys(errors).length) return res.status(400).json({ error: "Please fix the highlighted fields", fields: errors });
+
+  try {
+    res.status(201).json(await createCertificate(clean));
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/certificates/:id", async (req, res, next) => {
+  const id = parseId(req);
+  if (!id) return res.status(400).json({ error: "Invalid id" });
+
+  const { clean, errors } = validateCertificate(req.body);
+  if (Object.keys(errors).length) return res.status(400).json({ error: "Please fix the highlighted fields", fields: errors });
+
+  try {
+    res.json(await updateCertificate(id, clean));
+  } catch (err) {
+    if (notFound(err)) return res.status(404).json({ error: "Certificate not found" });
+    next(err);
+  }
+});
+
+router.delete("/certificates/:id", async (req, res, next) => {
+  const id = parseId(req);
+  if (!id) return res.status(400).json({ error: "Invalid id" });
+
+  try {
+    await deleteCertificate(id);
+    res.json({ ok: true });
+  } catch (err) {
+    if (notFound(err)) return res.status(404).json({ error: "Certificate not found" });
+    next(err);
+  }
+});
 // GET /api/admin/stats
 router.get("/stats", async (req, res, next) => {
   try {

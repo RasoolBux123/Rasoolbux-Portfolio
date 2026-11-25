@@ -9,10 +9,11 @@ import ThemeToggle from "./admin/ThemeToggle";
 const LINKS = [
   { label: "Home", href: "/#home" },
   { label: "About", href: "/#about" },
+  { label: "Experience", href: "/#experience" },
   { label: "Projects", href: "/#projects" },
   { label: "Skills", href: "/#skills" },
   { label: "Contact", href: "/#contact" },
-  { label: "Experience", href: "/#experience" },
+  { label: "Education", href: "/#education" },
 ];
 
 export default function Navbar() {
@@ -40,7 +41,7 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <a href="#home" className="text-lg font-bold">
+        <a href="/#home" className="text-lg font-bold">
           RB<span className="text-indigo-400">.dev</span>
         </a>
 
@@ -58,11 +59,11 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
           <a
-            href="#contact"
-            className="rounded-full bg-indigo-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
-          >
-            Let&apos;s talk
-          </a>
+  href="/#contact"
+  className="rounded-full bg-indigo-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
+>
+  Let&apos;s talk
+</a>
         </div>
 
         {/* mobile: toggle + menu button */}

@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import { API_URL } from "./lib/config";
 import type { Profile, Project } from "./lib/types";
 import Experience from "./components/Experience";
+import Education from "./components/Education";
 
       
 // always fetch fresh data from the Node.js API
@@ -40,6 +41,7 @@ export default async function Home() {
       <Experience data={profile} />
       <Projects projects={projects} />
       <Skills data={profile} />
+      <Education data={profile} />
       <Contact data={profile} />
       <Footer />
     </main>

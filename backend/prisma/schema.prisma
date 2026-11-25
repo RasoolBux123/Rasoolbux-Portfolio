@@ -88,3 +88,21 @@ model File {
   size      Int
   updatedAt DateTime @updatedAt
 }
+
+model Education {
+  id       Int    @id @default(autoincrement())
+  degree   String
+  school   String
+  period   String @default("")
+  detail   String @default("")
+  position Int
+}
+
+model Certificate {
+  id       Int    @id @default(autoincrement())
+  title    String
+  issuer   String @default("")
+  year     String @default("")
+  imageVer Int    @default(0) // 0 = no image uploaded
+  position Int
+}

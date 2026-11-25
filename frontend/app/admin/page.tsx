@@ -15,7 +15,8 @@ import ThemeToggle from "../components/admin/ThemeToggle";
 import type { AdminStats } from "../lib/types";
 import AnalyticsPanel from "../components/admin/AnalyticsPanel";
 import MediaPanel from "../components/admin/MediaPanel";
-type Tab = "projects" | "messages" | "about" | "skills" | "analytics" | "media";
+import CredentialsPanel from "../components/admin/CredentialsPanel";
+type Tab = "projects" | "messages" | "about" | "skills" | "analytics" | "media" | "education";
 
 export default function AdminHome() {
   const router = useRouter();
@@ -113,6 +114,7 @@ export default function AdminHome() {
         {tab === "skills" && <SkillsPanel />}
         {tab === "analytics" && <AnalyticsPanel />}
         {tab === "media" && <MediaPanel />}
+        {tab === "education" && <CredentialsPanel />}
       </div>
     </main>
   );

@@ -9,6 +9,8 @@ function parseKey(key) {
   if (key === "photo") return { kind: "photo", allowed: IMAGES, max: 2 * MB };
   const m = /^project-(\d+)$/.exec(key);
   if (m) return { kind: "project", id: Number(m[1]), allowed: IMAGES, max: 2 * MB };
+  const c = /^cert-(\d+)$/.exec(key);
+  if (c) return { kind: "cert", id: Number(c[1]), allowed: IMAGES, max: 2 * MB };
   return null;
 }
 
@@ -23,9 +25,14 @@ function sniff(buf) {
 }
 
 // the row that remembers "which version of this file is current"
-const ownerMissing = (rule) => (rule.kind === "project" ? "Project not found" : "Save your About details once first");
+const ownerMissing = (rule) =>
+  rule.kind === "project" ? "Project not found" : rule.kind === "cert" ? "Certificate not found" : "Save your About details once first";
 
 async function setVersion(rule, value) {
+    if (rule.kind === "cert") {
+    const row = await prisma.certificate.update({ where: { id: rule.id }, data: { imageVer: value } });
+    return row.imageVer;
+  }
   if (rule.kind === "project") {
     const row = await prisma.project.update({ where: { id: rule.id }, data: { imageVer: value } });
     return row.imageVer;
@@ -36,6 +43,10 @@ async function setVersion(rule, value) {
 }
 
 async function currentVersion(rule) {
+    if (rule.kind === "cert") {
+    const c = await prisma.certificate.findUnique({ where: { id: rule.id }, select: { imageVer: true } });
+    return c ? c.imageVer : null;
+  }
   if (rule.kind === "project") {
     const p = await prisma.project.findUnique({ where: { id: rule.id }, select: { imageVer: true } });
     return p ? p.imageVer : null;

@@ -1,6 +1,6 @@
 const prisma = require("../db");
 const defaults = require("../data/portfolio");
-
+const { listCertificates } = require("./credentials");
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https?:\/\/\S+$/i;
 const str = (v) => (typeof v === "string" ? v.trim() : "");
@@ -9,18 +9,21 @@ const str = (v) => (typeof v === "string" ? v.trim() : "");
 // Until the admin saves something for the first time (profile row missing),
 // it falls back to data/portfolio.js.
 async function getPortfolio() {
-  const [p, groups, exp] = await Promise.all([
+    const [p, groups, exp, edu, certificates] = await Promise.all([
     prisma.profile.findUnique({ where: { id: 1 } }),
     prisma.skillGroup.findMany({ orderBy: { position: "asc" } }),
     prisma.experience.findMany({ orderBy: { position: "asc" } }),
+    prisma.education.findMany({ orderBy: { position: "asc" } }),
+    listCertificates(),
   ]);
-
   if (!p) return defaults;
 
   return {
     profile: { name: defaults.profile.name, role: p.role, location: p.location, about: p.about },
     skills: groups.map((g) => ({ group: g.name, items: g.items.split(",") })),
     experience: exp.map((e) => ({ year: e.year, title: e.title, detail: e.detail })),
+    education: edu.map((e) => ({ degree: e.degree, school: e.school, period: e.period, detail: e.detail })),
+    certificates,
     contact: { email: p.email, github: p.github, linkedin: p.linkedin , whatsapp: p.whatsapp},
     resumeUrl: p.cvVer > 0 ? `/api/files/cv?v=${p.cvVer}` : defaults.resumeUrl,
     photoUrl: p.photoVer > 0 ? `/api/files/photo?v=${p.photoVer}` : defaults.photoUrl,

@@ -10,7 +10,8 @@ export type Project = {
   details: string; // longer text for the project page
   image: string; // "" when no image was uploaded
 };
-
+export type Education = { degree: string; school: string; period: string; detail: string };
+export type Certificate = { id: number; title: string; issuer: string; year: string; image: string };
 export type Profile = {
   profile: { name: string; role: string; location: string; about: string };
   skills: { group: string; items: string[] }[];
@@ -19,6 +20,8 @@ export type Profile = {
   resumeUrl: string;
   //resumeUrl: string;
   photoUrl: string;
+  education?: Education[];
+  certificates?: Certificate[];
   now?: { text: string; updatedAt: string | null } | null;
 };
 
