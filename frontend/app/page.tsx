@@ -10,7 +10,7 @@ import { API_URL } from "./lib/config";
 import type { Profile, Project } from "./lib/types";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
-
+import PersonJsonLd from "./components/PersonJsonLd";
       
 // always fetch fresh data from the Node.js API
 export const dynamic = "force-dynamic";
@@ -34,9 +34,11 @@ export default async function Home() {
 
   return (
     <main>
+      <PersonJsonLd data={profile} />
      <Hero photoUrl={profile?.photoUrl} resumeUrl={profile?.resumeUrl} />
       <Stats />
       <TechMarquee />
+      
       <About data={profile} />
       <Experience data={profile} />
       <Projects projects={projects} />

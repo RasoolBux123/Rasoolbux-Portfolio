@@ -26,11 +26,20 @@ const load = cache(async (id: string): Promise<Result> => {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const r = await load(id);
-  if (r.status !== "ok") return { title: "Project | Rasool Bux" };
-  const title = `${r.project.title} | Rasool Bux`;
-  return { title, description: r.project.description, openGraph: { title, description: r.project.description } };
+  if (r.status !== "ok") return { title: "Project" };
+  const { title, description, image } = r.project;
+  return {
+    title, // the layout adds " | Rasool Bux"
+    description,
+    alternates: { canonical: `/projects/${id}` },
+    openGraph: {
+      title,
+      description,
+      url: `/projects/${id}`,
+      ...(image ? { images: [assetUrl(image)] } : {}), // uploaded screenshot becomes the link preview
+    },
+  };
 }
-
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const r = await load(id);
