@@ -9,7 +9,10 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let projects: Project[] = [];
   try {
-    const res = await fetch(`${API_URL}/api/projects`, { cache: "no-store" });
+        const res = await fetch(`${API_URL}/api/projects`, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(5000), // do not wait more than 5 seconds for a sleeping API
+    });
     if (res.ok) projects = await res.json();
   } catch {
     // API asleep: the sitemap still lists the home page
