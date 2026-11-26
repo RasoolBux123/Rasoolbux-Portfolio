@@ -35,7 +35,7 @@ export default async function Home() {
   return (
     <main>
       <PersonJsonLd data={profile} />
-     <Hero photoUrl={profile?.photoUrl} resumeUrl={profile?.resumeUrl} />
+          <Hero photoUrl={profile?.photoUrl} resumeUrl={profile?.resumeUrl} whatsapp={profile?.contact?.whatsapp} />
       <Stats />
       <TechMarquee />
       

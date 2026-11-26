@@ -3,9 +3,10 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import ThemeToggle from "./admin/ThemeToggle";
 import GlassToggle from "./GlassToggle";
+import { API_URL, assetUrl } from "../lib/config";
 
 const LINKS = [
   { label: "Home", href: "/#home" },
@@ -15,13 +16,21 @@ const LINKS = [
   { label: "Projects", href: "/#projects" },
   { label: "Skills", href: "/#skills" },
   { label: "Contact", href: "/#contact" },
-  
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [resume, setResume] = useState("/Rasool_bux.pdf");
+
+  // use the CV that was uploaded in the admin panel (falls back to the file in /public)
+  useEffect(() => {
+    fetch(`${API_URL}/api/profile`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d?.resumeUrl && setResume(d.resumeUrl))
+      .catch(() => {});
+  }, []);
 
   // add a glass background once the page is scrolled
   useEffect(() => {
@@ -57,21 +66,33 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* desktop: toggle + Hire me */}
+        {/* desktop: toggles + Resume + Let's talk */}
         <div className="hidden items-center gap-3 md:flex">
           <GlassToggle />
           <ThemeToggle />
           <a
-  href="/#contact"
-  className="rounded-full bg-indigo-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
->
-  Let&apos;s talk
-</a>
+            href={assetUrl(resume)}
+            download
+            title="Download resume"
+            className="flex items-center gap-1.5 rounded-full border border-white/25 px-3 py-2 text-sm text-gray-300 transition hover:bg-white/10 hover:text-white"
+          >
+            <Download size={15} /> Resume
+          </a>
+          <a
+            href="/#contact"
+            className="rounded-full bg-indigo-500 px-5 py-2 text-sm font-medium text-white transition hover:bg-indigo-400"
+          >
+            Let&apos;s talk
+          </a>
         </div>
 
-        {/* mobile: toggle + menu button */}
+        {/* mobile: toggles + resume icon + menu button */}
         <div className="flex items-center gap-2 md:hidden">
+          <GlassToggle />
           <ThemeToggle />
+          <a href={assetUrl(resume)} download aria-label="Download resume" className="rounded-lg p-2 text-gray-300 hover:bg-white/10">
+            <Download size={20} />
+          </a>
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle menu"

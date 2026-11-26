@@ -7,6 +7,7 @@ import Typewriter from "./Typewriter";
 import SmartGreeting from "./SmartGreeting";
 import { assetUrl } from "../lib/config";
 import Tilt from "./Tilt";
+import { MessageCircle } from "lucide-react";
 // phrases that get typed in the heading (edit freely)
 const PHRASES = ["Next.js · FastAPI · PostgreSQL", "Building real-world products", "Automation with n8n"];
 
@@ -23,7 +24,10 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
-export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resumeUrl?: string }) {
+export default function Hero({ photoUrl, resumeUrl, whatsapp }: { photoUrl?: string; resumeUrl?: string; whatsapp?: string }) {
+  // wa.me wants digits only, with the country code (e.g. 923001234567)
+  const wa = (whatsapp ?? "").replace(/\D/g, "");
+  const waHref = wa ? `https://wa.me/${wa}?text=${encodeURIComponent("Hi RB, I saw your portfolio.")}` : "#contact";
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-24">
       {/* glowing blobs behind the hero */}
@@ -91,13 +95,14 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
                 View Projects
               </a>
             </Magnetic>
-            <Magnetic>
+                        <Magnetic>
               <a
-                href={assetUrl(resumeUrl ?? "/Rasool_bux.pdf")}
-                download
-                className="block rounded-full border border-white/25 px-6 py-3 text-sm font-medium transition hover:bg-white/10"
+                href={waHref}
+                target={wa ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-full border border-emerald-400/50 bg-emerald-500/15 px-6 py-3 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500/25"
               >
-                Download CV
+                <MessageCircle size={16} /> WhatsApp me
               </a>
             </Magnetic>
           </motion.div>
