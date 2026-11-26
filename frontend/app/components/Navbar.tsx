@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./admin/ThemeToggle";
+import GlassToggle from "./GlassToggle";
 
 const LINKS = [
   { label: "Home", href: "/#home" },
@@ -58,6 +59,7 @@ export default function Navbar() {
 
         {/* desktop: toggle + Hire me */}
         <div className="hidden items-center gap-3 md:flex">
+          <GlassToggle />
           <ThemeToggle />
           <a
   href="/#contact"

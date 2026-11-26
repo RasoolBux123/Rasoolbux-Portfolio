@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* apply the saved theme before the page paints, so there is no dark flash */}
-        <script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}" }} />
+       <script dangerouslySetInnerHTML={{ __html: "try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');if(localStorage.getItem('glass')!=='off')document.documentElement.setAttribute('data-glass','on')}catch(e){}" }} />
       </head>
       <body>
         <IntroLoader />
