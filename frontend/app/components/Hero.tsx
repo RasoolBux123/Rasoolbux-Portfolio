@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 import Typewriter from "./Typewriter";
 import SmartGreeting from "./SmartGreeting";
 import { assetUrl } from "../lib/config";
-
+import Tilt from "./Tilt";
 // phrases that get typed in the heading (edit freely)
 const PHRASES = ["Next.js · FastAPI · PostgreSQL", "Building real-world products", "Automation with n8n"];
 
@@ -103,12 +103,16 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
           </motion.div>
         </motion.div>
 
-        {/* right: my photo (stays still) with tech chips travelling around it */}
+               {/* right: my photo with tech chips travelling around it; the whole block tilts in 3D */}
+        <Tilt max={14} className="mx-auto h-64 w-64 rounded-full sm:h-80 sm:w-80">
+          {/* floating glass bubbles (decor) */}
+          <motion.span aria-hidden animate={{ y: [0, -14, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -left-6 top-4 h-12 w-12 rounded-full border border-white/50 bg-white/15 backdrop-blur-md" />
+          <motion.span aria-hidden animate={{ y: [0, 12, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="pointer-events-none absolute -right-4 bottom-10 h-8 w-8 rounded-xl border border-white/50 bg-white/15 backdrop-blur-md" />
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-          className="relative mx-auto h-64 w-64 sm:h-80 sm:w-80"
+          className="relative h-full w-full"
         >
           {/* gradient ring */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 shadow-[0_0_100px_rgba(99,102,241,0.55)]" />
@@ -136,6 +140,7 @@ export default function Hero({ photoUrl, resumeUrl }: { photoUrl?: string; resum
             ))}
           </div>
         </motion.div>
+         </Tilt>
       </div>
     </section>
   );
