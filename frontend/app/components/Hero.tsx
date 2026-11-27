@@ -53,11 +53,14 @@ export default function Hero({ photoUrl, resumeUrl, whatsapp }: { photoUrl?: str
             <SmartGreeting resumeUrl={resumeUrl} />
           </motion.div>
 
-          <motion.span
+                    <motion.span
             variants={item}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-indigo-500/20 px-4 py-1.5 text-xs"
+            className="inline-flex items-center gap-2.5 rounded-full border border-emerald-400/50 bg-emerald-500/15 px-5 py-2 text-sm font-bold sm:text-base"
           >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" /> Available for work
+            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400" />
+            <span>
+              Currently working at <span className="text-emerald-300">Xloop Digital</span>
+            </span>
           </motion.span>
 
           <motion.h1 variants={item} className="mt-5 text-5xl font-bold leading-tight sm:text-6xl">
@@ -82,8 +85,10 @@ export default function Hero({ photoUrl, resumeUrl, whatsapp }: { photoUrl?: str
             <Typewriter words={PHRASES} />
           </motion.p>
 
-          <motion.p variants={item} className="mt-4 max-w-md leading-relaxed text-gray-400">
-            I build fast, modern web apps with Next.js, Node.js and PostgreSQL.
+                    <motion.p variants={item} className="mt-5 max-w-xl text-lg leading-relaxed text-gray-400 sm:text-xl">
+           I build fast, modern web apps and AI-powered products, from the user interface to the APIs and databases behind
+            it. I work with Next.js, Node.js, Python, FastAPI and PostgreSQL, and I enjoy turning real problems into clean,
+            reliable software that people actually use.
           </motion.p>
 
           <motion.div variants={item} className="mt-7 flex flex-wrap gap-3">
