@@ -64,7 +64,7 @@ export default function Hero({ photoUrl, resumeUrl, whatsapp }: { photoUrl?: str
           </motion.span>
 
           <motion.h1 variants={item} className="mt-5 text-5xl font-bold leading-tight sm:text-6xl">
-            {"Hi, I'm RB".split("").map((ch, n) => (
+            {"Hi, I'm Rasool.B".split("").map((ch, n) => (
               <motion.span
                 key={n}
                 initial={{ opacity: 0, y: 40, rotate: 8 }}
