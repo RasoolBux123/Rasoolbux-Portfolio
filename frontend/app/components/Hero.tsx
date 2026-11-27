@@ -59,7 +59,7 @@ export default function Hero({ photoUrl, resumeUrl, whatsapp }: { photoUrl?: str
           >
             <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400" />
             <span>
-              Currently working at <span className="text-emerald-300">Xloop Digital</span>
+            Currently working at <span className="text-blue-400">Xloop Digital</span>
             </span>
           </motion.span>
 
